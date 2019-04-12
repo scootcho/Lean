@@ -128,13 +128,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         /// <summary>
         /// Returns true if we're currently connected to the broker
         /// </summary>
-        public override bool IsConnected
-        {
-            get
-            {
-                return _client != null && _client.Connected && !_disconnected1100Fired;
-            }
-        }
+        public override bool IsConnected => _client != null && _client.Connected && !_disconnected1100Fired;
 
         /// <summary>
         /// Returns true if the connected user is a financial advisor
