@@ -229,7 +229,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             _clientId = IncrementClientId();
             _agentDescription = agentDescription;
 
-            Log.Trace("InteractiveBrokersBrokerage.InteractiveBrokersBrokerage(): Starting IB Automater");
+            Log.Trace("InteractiveBrokersBrokerage.InteractiveBrokersBrokerage(): Starting IB Automater...");
 
             // start IB Gateway
             _ibAutomater = new IBAutomater.IBAutomater(twsDirectory, userName, password, tradingMode, port);
@@ -240,6 +240,8 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
 
             // wait a few seconds for IB to start up
             _ibAutomaterInitializeEvent.WaitOne(TimeSpan.FromSeconds(30));
+
+            Log.Trace("InteractiveBrokersBrokerage.InteractiveBrokersBrokerage(): IB Automater initialized.");
 
             CheckIbAutomaterErrors();
 
