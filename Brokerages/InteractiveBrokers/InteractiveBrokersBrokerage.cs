@@ -2802,32 +2802,32 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             }
         }
 
-        private void OnIbAutomaterOutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void OnIbAutomaterOutputDataReceived(object sender, string e)
         {
-            if (e.Data == null) return;
+            if (e == null) return;
 
-            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterOutputDataReceived(): {e.Data}");
+            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterOutputDataReceived(): {e}");
 
             // an existing session was detected and IBAutomater clicked the "Exit Application" button
-            if (e.Data.Contains("Existing session detected"))
+            if (e.Contains("Existing session detected"))
             {
                 _existingSessionDetected = true;
                 _ibAutomaterInitializeEvent.Set();
             }
 
             // a security dialog (2FA/code card) was detected by IBAutomater
-            if (e.Data.Contains("Second Factor Authentication") || e.Data.Contains("Security Code Card Authentication"))
+            if (e.Contains("Second Factor Authentication") || e.Contains("Security Code Card Authentication"))
             {
                 _securityDialogDetected = true;
                 _ibAutomaterInitializeEvent.Set();
             }
         }
 
-        private void OnIbAutomaterErrorDataReceived(object sender, DataReceivedEventArgs e)
+        private void OnIbAutomaterErrorDataReceived(object sender, string e)
         {
-            if (e.Data == null) return;
+            if (e == null) return;
 
-            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterErrorDataReceived(): {e.Data}");
+            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterErrorDataReceived(): {e}");
         }
 
         private void OnIbAutomaterExited(object sender, int exitCode)
