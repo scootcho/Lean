@@ -34,6 +34,7 @@ using Order = QuantConnect.Orders.Order;
 using IB = QuantConnect.Brokerages.InteractiveBrokers.Client;
 using IBApi;
 using NodaTime;
+using QuantConnect.IBAutomater;
 using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.TimeInForces;
 using Bar = QuantConnect.Data.Market.Bar;
@@ -2805,37 +2806,37 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             }
         }
 
-        private void OnIbAutomaterOutputDataReceived(object sender, string e)
+        private void OnIbAutomaterOutputDataReceived(object sender, OutputDataReceivedEventArgs e)
         {
-            if (e == null) return;
+            if (e.Data == null) return;
 
-            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterOutputDataReceived(): {e}");
+            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterOutputDataReceived(): {e.Data}");
 
             // an existing session was detected and IBAutomater clicked the "Exit Application" button
-            if (e.Contains("Existing session detected"))
+            if (e.Data.Contains("Existing session detected"))
             {
                 _existingSessionDetected = true;
                 _ibAutomaterInitializeEvent.Set();
             }
 
             // a security dialog (2FA/code card) was detected by IBAutomater
-            if (e.Contains("Second Factor Authentication") || e.Contains("Security Code Card Authentication"))
+            if (e.Data.Contains("Second Factor Authentication") || e.Data.Contains("Security Code Card Authentication"))
             {
                 _securityDialogDetected = true;
                 _ibAutomaterInitializeEvent.Set();
             }
         }
 
-        private void OnIbAutomaterErrorDataReceived(object sender, string e)
+        private void OnIbAutomaterErrorDataReceived(object sender, ErrorDataReceivedEventArgs e)
         {
-            if (e == null) return;
+            if (e.Data == null) return;
 
-            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterErrorDataReceived(): {e}");
+            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterErrorDataReceived(): {e.Data}");
         }
 
-        private void OnIbAutomaterExited(object sender, int exitCode)
+        private void OnIbAutomaterExited(object sender, ExitedEventArgs e)
         {
-            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterExited(): Exit code: {exitCode}");
+            Log.Trace($"InteractiveBrokersBrokerage.OnIbAutomaterExited(): Exit code: {e.ExitCode}");
         }
 
         private void CheckIbAutomaterErrors()
