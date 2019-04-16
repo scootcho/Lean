@@ -154,6 +154,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
                 Config.Get("ib-host", "LOCALHOST"),
                 Config.GetInt("ib-port", 4001),
                 Config.Get("ib-tws-dir"),
+                Config.Get("ib-version", "974"),
                 Config.Get("ib-user-name"),
                 Config.Get("ib-password"),
                 Config.Get("ib-trading-mode"),
@@ -178,6 +179,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
                 Config.Get("ib-host", "LOCALHOST"),
                 Config.GetInt("ib-port", 4001),
                 Config.Get("ib-tws-dir"),
+                Config.Get("ib-version", "974"),
                 Config.Get("ib-user-name"),
                 Config.Get("ib-password"),
                 Config.Get("ib-trading-mode"),
@@ -196,6 +198,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         /// <param name="host">host name or IP address of the machine where TWS is running. Leave blank to connect to the local host.</param>
         /// <param name="port">must match the port specified in TWS on the Configure&gt;API&gt;Socket Port field.</param>
         /// <param name="twsDirectory">The IB TWS root directory</param>
+        /// <param name="ibVersion">The IB Gateway version</param>
         /// <param name="userName">The login user name</param>
         /// <param name="password">The login password</param>
         /// <param name="tradingMode">The trading mode: 'live' or 'paper'</param>
@@ -208,6 +211,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             string host,
             int port,
             string twsDirectory,
+            string ibVersion,
             string userName,
             string password,
             string tradingMode,
@@ -226,7 +230,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             Log.Trace("InteractiveBrokersBrokerage.InteractiveBrokersBrokerage(): Starting IB Automater...");
 
             // start IB Gateway
-            _ibAutomater = new IBAutomater.IBAutomater(twsDirectory, userName, password, tradingMode, port);
+            _ibAutomater = new IBAutomater.IBAutomater(twsDirectory, ibVersion, userName, password, tradingMode, port);
             _ibAutomater.OutputDataReceived += OnIbAutomaterOutputDataReceived;
             _ibAutomater.ErrorDataReceived += OnIbAutomaterErrorDataReceived;
             _ibAutomater.Exited += OnIbAutomaterExited;
