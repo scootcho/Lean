@@ -285,13 +285,32 @@ namespace QuantConnect.Python
                     {
                         var tuples = kvp.Value.Item1.Select(selector).ToArray();
                         index = _pandas.MultiIndex.from_tuples(tuples, names: splitNames);
+                        foreach (var pyTuple in tuples)
+                        {
+                            pyTuple.Dispose();
+                        }
                         indexCache[kvp.Value.Item1] = index;
                     }
 
                     pyDict.SetItem(kvp.Key, _pandas.Series(values, index));
                 }
                 _series.Clear();
-                return _pandas.DataFrame(pyDict);
+                var result = _pandas.DataFrame(pyDict);
+                foreach (var value in pyDict)
+                {
+                    (value as PyObject).Dispose();
+                }
+                pyDict.Dispose();
+                foreach (var value in indexCache.Values)
+                {
+                    value.Dispose();
+                }
+                foreach (var pyObject in list)
+                {
+                    pyObject.Dispose();
+                }
+                empty.Dispose();
+                return result;
             }
         }
 

@@ -86,8 +86,15 @@ namespace QuantConnect.Python
                 {
                     return _pandas.DataFrame();
                 }
-                var dataFrames = sliceDataDict.Select(x => x.Value.ToPandasDataFrame(maxLevels));
-                return _pandas.concat(dataFrames.ToArray(), Py.kw("sort", true));
+                var dataFrames = sliceDataDict.Select(x => x.Value.ToPandasDataFrame(maxLevels)).ToArray();
+                var param = Py.kw("sort", true);
+                var result = _pandas.concat(dataFrames, param);
+                param.Dispose();
+                foreach (var dataFrame in dataFrames)
+                {
+                    dataFrame.Dispose();
+                }
+                return result;
             }
         }
 
@@ -146,7 +153,13 @@ namespace QuantConnect.Python
                     pyDict.SetItem(kvp.Key.ToLower(), _pandas.Series(values, index));
                 }
 
-                return _pandas.DataFrame(pyDict, columns: data.Keys.Select(x => x.ToLower()).OrderBy(x => x));
+                var result = _pandas.DataFrame(pyDict, columns: data.Keys.Select(x => x.ToLower()).OrderBy(x => x));
+                foreach (var value in pyDict)
+                {
+                    (value as PyObject).Dispose();
+                }
+                pyDict.Dispose();
+                return result;
             }
         }
 
