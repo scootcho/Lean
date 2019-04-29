@@ -95,4 +95,4 @@ class MaximumSectorExposureRiskManagementModel(RiskManagementModel):
             ]);
 
         if not anyFundamentalData:
-            raise Exception("MaximumSectorExposureRiskManagementModel.OnSecuritiesChanged: Please select a portfolio selection model that selects securities with fundamental data.")
+            algorithm.Debug("MaximumSectorExposureRiskManagementModel.OnSecuritiesChanged: Please select a portfolio selection model that selects securities with fundamental data.")

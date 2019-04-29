@@ -124,7 +124,7 @@ namespace QuantConnect.Algorithm.Framework.Risk
 
             if (!anyFundamentalData)
             {
-                throw new Exception("MaximumSectorExposureRiskManagementModel.OnSecuritiesChanged: Please select a portfolio selection model that selects securities with fundamental data.");
+                algorithm.Debug("MaximumSectorExposureRiskManagementModel.OnSecuritiesChanged: Please select a portfolio selection model that selects securities with fundamental data.");
             }
         }
     }
