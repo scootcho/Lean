@@ -152,7 +152,7 @@ namespace QuantConnect.Algorithm.Framework.Portfolio
                 var sidx = 0;
                 foreach (var symbol in symbols)
                 {
-                    var weight = (decimal)W[sidx];
+                    var weight = W[sidx].SafeDecimalCast();
 
                     var target = PortfolioTarget.Percent(algorithm, symbol, weight);
                     if (target != null)
