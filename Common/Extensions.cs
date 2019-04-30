@@ -256,6 +256,24 @@ namespace QuantConnect
         }
 
         /// <summary>
+        /// Tries to cast the specified input value to a decimal while acknowledging the overflow conditions
+        /// </summary>
+        /// <param name="input">The value to be cast</param>
+        /// <param name="value">The input value as a decimal, if the value is too large or to small to be represented
+        /// as a decimal, then the closest decimal value will be returned</param>
+        /// <returns>False if input value is <see cref="double.NaN"/> or <see cref="double.NegativeInfinity"/> or <see cref="double.PositiveInfinity"/></returns>
+        public static bool TrySafeDecimalCast(this double input, out decimal value)
+        {
+            if (double.IsNaN(input) || double.IsInfinity(input))
+            {
+                value = default(decimal);
+                return false;
+            }
+            value = input.SafeDecimalCast();
+            return true;
+        }
+
+        /// <summary>
         /// Will remove any trailing zeros for the provided decimal input
         /// </summary>
         /// <param name="input">The <see cref="decimal"/> to remove trailing zeros from</param>
